@@ -101,7 +101,9 @@ In order to keep decrease the chances for false positives I kept the heatmap fro
 
 My pipeline has a tendency to find false positives. I could have kept the positions of the labels, and only draw the bounding box on "second try", cars dont just appear. I addition to the "heatmap memory" I set up to avoid false positives.
 
-The test video did not show any left turns, nor any cars straight ahead. I look for cars slightly to the right, so this migth have changed the performance.
+The test video did not show any left turns, nor any cars straight ahead. I look for cars slightly to the right, so left turns migth have worsened the performance. 
+
+I am also uncertain about the distance one should detect a car, the perpomance looks ok with me, but when the cars move ahead, i loose track of them. I could probably tune the window size to detect the cars further ahead.
 
 The speed could probably be better, I did not understand how to implement the hog function for the whole image as suggested in lecture #38.
 
