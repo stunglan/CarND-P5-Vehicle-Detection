@@ -70,7 +70,7 @@ To enhance the speed I tried to keep the window rectancle small, so that the num
 
 ###1. Provide a link to your final video output.
 
-Your pipeline should perform reasonably well on the entire project video 
+The pipeline should perform reasonably well on the entire project video. 
 Here's a [link to my video result](output_images/project_video_projected.mp4).
 
 As you can see I tend to find some false positives.
