@@ -17,7 +17,7 @@ This is my writeup of project Vehicle Detection.
 ###1. How I extracted the HOG
 I used the dataset suggested in the tpis for the project, a combination images from the GTI Vehicle database and the KITTI vision benchmark suite.
 
-The first code cell, cell #1, is just a loading and display of the test images.
+The first code cell, cell #2, is just a loading and display of the test images.
 
 Then I load the training data setin cell #3, showing that the data set contains 8792 images containing cars and 8968 images that do not contain cars.
 
@@ -48,7 +48,7 @@ The code in cell #12 and #13 is there only for me not having to rerun the whole 
 
 ###1. Describe how (and identify where in your code) you implemented a sliding window search.  How did you decide what scales to search and how much to overlap windows?
 
-The functions for drawing boxes and create the windows in cell #14 and #15 for use when searching was copied from the lecture quizzes. 
+The functions for drawing boxes and create the windows in cell #13 for use when searching was copied from the lecture quizzes. 
 
 To identify where to look for cars I experimented with rectangles on top of the test images. See image below for how my rectangle fit the test images:
 ![roi](output_images/regionofinterest.png)
@@ -61,7 +61,7 @@ I then experimented with various sizes for the sliding windows in cell #17 - #21
 
 ###2. Show some examples of test images to demonstrate how your pipeline is working.  What did you do to optimize the performance of your classifier?
 
-To enhance the speed I tried to keep the window rectancle small, so that the number of sliding windows was minimized. I also picked up from the forums that I could use the decision_function method for the SVC on a set of features and windows rather on each window.
+To enhance the speed I tried to keep the window rectancle small, so that the number of sliding windows was minimized. I also picked up from the forums that I could use the decision_function method for the SVC on a set of features and windows rather on each window, this is shown in cell #21.
 
 ![foundcars](output_images/foundcars.png)
 
@@ -80,10 +80,8 @@ As you can see I tend to find some false positives.
 
 I recorded the positions of positive detections in each frame of the video.  From the positive detections I created a heatmap and then thresholded that map to identify vehicle positions.  I then used `scipy.ndimage.measurements.label()` to identify individual blobs in the heatmap.  I then assumed each blob corresponded to a vehicle.  I constructed bounding boxes to cover the area of each blob detected.  
 
-In ordre to not keep the boxes stable I kept the heatmap from one frame to another, decreasing the effect gradually, see cell #25.
+In order to keep decrease the chances for false positives I kept the heatmap from one frame to another, decreasing the effect gradually, see cell #25. This also decreses the "woblyness" from the bounding boxes around the cars.  
 
-
-Here's an example result showing the heatmap from a series of frames of video, the result of `scipy.ndimage.measurements.label()` and the bounding boxes then overlaid on the last frame of video:
 
 ### Here are six test images with boxes and their corresponding heatmaps:
 ![heatmap](output_images/heatmap0.png)
@@ -97,9 +95,9 @@ Here's an example result showing the heatmap from a series of frames of video, t
 
 ---
 
-###Discussion
+##Discussion
 
-####1. Briefly discuss any problems / issues you faced in your implementation of this project.  Where will your pipeline likely fail?  What could you do to make it more robust?
+###1. Briefly discuss any problems / issues you faced in your implementation of this project.  Where will your pipeline likely fail?  What could you do to make it more robust?
 
 My pipeline has a tendency to find false positives. I could have kept the positions of the labels, and only draw the bounding box on "second try", cars dont just appear. I addition to the "heatmap memory" I set up to avoid false positives.
 
