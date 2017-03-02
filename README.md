@@ -14,7 +14,7 @@ This is my writeup of project Vehicle Detection.
 
 ##Histogram of Oriented Gradients (HOG)
 
-#### How I extracted the HOG
+###1. How I extracted the HOG
 I used the dataset suggested in the tpis for the project, a combination images from the GTI Vehicle database and the KITTI vision benchmark suite.
 
 The first code cell, cell #1, is just a loading and display of the test images.
@@ -23,19 +23,19 @@ Then I load the training data setin cell #3, showing that the data set contains 
 
 I then in cell #4 define functions to extract the features from the images, including a binned spatial image, a color histogram and the hog features. I add a conveniance function that I also can use when searching for cars afterwards. I add these feature into a long feature vector. To be able to reuse my configuration I create a configuration dictionary in cell #5. I ended up using 2 cells per block, 8 pixels pr block all channels and LUV colorspace. Cell #6 do the actual processing to extract the features from the images.
 The image below shows the hog visualisation from a car image, code in cell #7:
-![hog_visualisation][output_images/hogviz.png]
+![hog_visualisation](output_images/hogviz.png)
 
 
-####2. Explain how you settled on your final choice of HOG parameters.
+###2. Explain how you settled on your final choice of HOG parameters.
 
 I tried various combinations of parameters and cannot say I found and ideal set of parameters. I did not do a colour analysis as suggested in lecture #12, but rather examined the result of the search on the test images. See image below: 
-![foundcars][./output_images/foundcars.png]
+![foundcars](./output_images/foundcars.png)
 
 The resulting configuration tend to find some false positives.
 
-####3. Describe how (and identify where in your code) you trained a classifier using your selected HOG features (and color features if you used them).
+###3. Describe how (and identify where in your code) you trained a classifier using your selected HOG features (and color features if you used them).
 I then normalize my feature vectors using sklearns Standardscaler in cell #8. The image below shows the difference in the feature vector before and after the normalisation. It is easy to see that the three features that where concatinated where of very different magnitude:
-![feature_normalisation][./output_images/featurenormalisation.png]
+![feature_normalisation](./output_images/featurenormalisation.png)
 
 
 The validation sample that I isolated out in cell #9 was very small, as it was only used for a random sample in cell #12. The success on the validation was very high, but since the sample was so small, the accuracy was probably incorrect.
@@ -44,31 +44,31 @@ I trained the classifier using a support vector classifier from sklearn.
 
 The code in cell #12 and #13 is there only for me not having to rerun the whole notebook in order to test the siding window, finding cars in the images and video.
 
-###Sliding Window Search
+##Sliding Window Search
 
-####1. Describe how (and identify where in your code) you implemented a sliding window search.  How did you decide what scales to search and how much to overlap windows?
+###1. Describe how (and identify where in your code) you implemented a sliding window search.  How did you decide what scales to search and how much to overlap windows?
 
 The functions for drawing boxes and create the windows in cell #14 and #15 for use when searching was copied from the lecture quizzes. 
 
 To identify where to look for cars I experimented with rectangles on top of the test images. See image below for how my rectangle fit the test images:
-![roi][output_images/regionofinterest.png]
+![roi](output_images/regionofinterest.png)
 
 I then experimented with various sizes for the sliding windows in cell #17 - #21, ended up with a combination of various sizes as shown in the image below:
-![allwindows][output_images/allwindows.png]
+![allwindows](output_images/allwindows.png)
 
 
 
 
-####2. Show some examples of test images to demonstrate how your pipeline is working.  What did you do to optimize the performance of your classifier?
+###2. Show some examples of test images to demonstrate how your pipeline is working.  What did you do to optimize the performance of your classifier?
 
 To enhance the speed I tried to keep the window rectancle small, so that the number of sliding windows was minimized. I also picked up from the forums that I could use the decision_function method for the SVC on a set of features and windows rather on each window.
 
-![foundcars][output_images/foundcars.png]
----
+![foundcars](output_images/foundcars.png)
 
-### Video Implementation
 
-####1. Provide a link to your final video output.
+## Video Implementation
+
+###1. Provide a link to your final video output.
 
 Your pipeline should perform reasonably well on the entire project video 
 Here's a [link to my video result](output_images/project_video_projected.mp4).
@@ -76,7 +76,7 @@ Here's a [link to my video result](output_images/project_video_projected.mp4).
 As you can see I tend to find some false positives.
 
 
-####2. Describe how (and identify where in your code) you implemented some kind of filter for false positives and some method for combining overlapping bounding boxes.
+###2. Describe how (and identify where in your code) you implemented some kind of filter for false positives and some method for combining overlapping bounding boxes.
 
 I recorded the positions of positive detections in each frame of the video.  From the positive detections I created a heatmap and then thresholded that map to identify vehicle positions.  I then used `scipy.ndimage.measurements.label()` to identify individual blobs in the heatmap.  I then assumed each blob corresponded to a vehicle.  I constructed bounding boxes to cover the area of each blob detected.  
 
@@ -86,12 +86,12 @@ In ordre to not keep the boxes stable I kept the heatmap from one frame to anoth
 Here's an example result showing the heatmap from a series of frames of video, the result of `scipy.ndimage.measurements.label()` and the bounding boxes then overlaid on the last frame of video:
 
 ### Here are six test images with boxes and their corresponding heatmaps:
-![heatmap][output_images/heatmap0.png]
-![heatmap][output_images/heatmap1.png]
-![heatmap][output_images/heatmap2.png]
-![heatmap][output_images/heatmap3.png]
-![heatmap][output_images/heatmap4.png]
-![heatmap][output_images/heatmap5.png]
+![heatmap](output_images/heatmap0.png)
+![heatmap](output_images/heatmap1.png)
+![heatmap](output_images/heatmap2.png)
+![heatmap](output_images/heatmap3.png)
+![heatmap](output_images/heatmap4.png)
+![heatmap](output_images/heatmap5.png)
 
 
 
